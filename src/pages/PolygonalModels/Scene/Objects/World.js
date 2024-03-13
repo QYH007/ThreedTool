@@ -368,7 +368,9 @@ const World = () => {
   const world = PolygonalModels.useStore((state) => state.complex.models[PolygonalModels.EComplexModel.WORLD]);
   const saveCam = PolygonalModels.useStore((state) => state.actions.saveComplexCamera);
 
-  const { scene } = useThree();
+  const { scene, camera } = useThree();
+  camera.position.set(0, 50, -150);
+  camera.lookAt(0, 0, 0);
   const userpcd = scene.getObjectByName('User.pcd');
   if (userpcd) {
     scene.remove(userpcd);

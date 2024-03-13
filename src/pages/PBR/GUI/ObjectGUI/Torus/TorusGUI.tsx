@@ -5,9 +5,11 @@ import { PanelAppear } from '../../../../../components/layouts/surfaces/PanelApp
 import PanelSlider from '../../../../../components/forms/PanelSlider';
 import { PBR } from '../../../../../stores';
 import { ObjectReset } from '../ObjectReset';
+import ScenePicker from '../../ScenePicker';
 
 const TorusGUI: React.FC = () => {
   const torus = PBR.useStore((state: PBR.State) => state.torus);
+  const scene = PBR.useStore((state: PBR.State) => state.scene);
   const activeObject = PBR.useStore((state: PBR.State) => state.scene.activeObject);
   const actions = PBR.useStore((state: PBR.State) => state.actions);
 
@@ -39,29 +41,19 @@ const TorusGUI: React.FC = () => {
           }
           label="Toggle Transparent"
         />
+        <FormControlLabel
+          control={
+            <Switch
+              color="primary"
+              checked={scene.moveLight}
+              onChange={(): void => actions.toggleMovingLight()}
+              value="checkedB"
+            />
+          }
+          label="Moving Point Light"
+        />
       </FormGroup>
-      <Divider />
-
-      <PanelSlider
-        key={`slider-1`}
-        label={'Radius'}
-        value={torus.radius}
-        step={0.5}
-        min={torus.minRadius}
-        max={torus.maxRadius}
-        onChange={(_, v): void => actions.setTorusRadius(+v)}
-      />
-
-      <PanelSlider
-        key={`slider-2`}
-        label={'Tube Width'}
-        value={torus.tubeWidth}
-        step={0.1}
-        min={torus.minTubeWidth}
-        max={torus.maxTubeWidth}
-        onChange={(_, v): void => actions.setTorusTubeWidth(+v)}
-      />
-
+      <ScenePicker />
       <Divider />
 
       <PanelSlider

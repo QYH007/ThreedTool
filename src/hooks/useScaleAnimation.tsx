@@ -31,13 +31,16 @@ export function useScaleAnimation(
 
     ref.current.matrixAutoUpdate = false;
 
-    if (store.getState().falseNormals) {
-      animateFalseNormalAnimationStep(mat, ref);
-    } else {
-      const currentTransforms = store.getState().mesh.clone();
-      currentTransforms.applyMatrix4(mat);
-      ref.current.matrix.copy(currentTransforms.matrix);
-    }
+    // if (store.getState().falseNormals) {
+    //   animateFalseNormalAnimationStep(mat, ref);
+    // } else {
+    //   const currentTransforms = store.getState().mesh.clone();
+    //   currentTransforms.applyMatrix4(mat);
+    //   ref.current.matrix.copy(currentTransforms.matrix);
+    // }
+    const currentTransforms = store.getState().mesh.clone();
+    currentTransforms.applyMatrix4(mat);
+    ref.current.matrix.copy(currentTransforms.matrix);
   };
 
   // spring based animation hook

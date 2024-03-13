@@ -5,8 +5,10 @@ import { PanelAppear } from '../../../../../components/layouts/surfaces/PanelApp
 import PanelSlider from '../../../../../components/forms/PanelSlider';
 import { PBR } from '../../../../../stores';
 import { ObjectReset } from '../ObjectReset';
+import ScenePicker from '../../ScenePicker';
 
 const BoxGUI: React.FC = () => {
+  const scene = PBR.useStore((state: PBR.State) => state.scene);
   const box = PBR.useStore((state: PBR.State) => state.box);
   const activeObject = PBR.useStore((state: PBR.State) => state.scene.activeObject);
   const actions = PBR.useStore((state: PBR.State) => state.actions);
@@ -28,8 +30,19 @@ const BoxGUI: React.FC = () => {
           }
           label="Toggle Visibility"
         />
+        <FormControlLabel
+          control={
+            <Switch
+              color="primary"
+              checked={scene.moveLight}
+              onChange={(): void => actions.toggleMovingLight()}
+              value="checkedA"
+            />
+          }
+          label="Moving Point Light"
+        />
       </FormGroup>
-
+      <ScenePicker />
       <Divider />
 
       <PanelSlider
@@ -76,6 +89,8 @@ const BoxGUI: React.FC = () => {
         max={1}
         onChange={(_, v): void => actions.setBoxRoughness(+v)}
       />
+
+      <FormGroup></FormGroup>
     </PanelAppear>
   );
 };

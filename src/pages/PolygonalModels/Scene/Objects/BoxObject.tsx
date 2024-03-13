@@ -5,26 +5,25 @@ import * as THREE from 'three';
 import { VertexNormals } from '../../../../components/3d/Helpers';
 import { OrbitControls } from '../../../../components/3d/OrbitControls';
 import { PolygonalModels } from '../../../../stores';
-import { useSavedCamera } from '../../../../hooks/useSavedCamera';
 import { useThree } from '@react-three/fiber';
 import { FaceNormals } from '../../../../components/3d/Helpers';
 
 const BoxObject: React.FC = () => {
   const box = PolygonalModels.useStore((state) => state.box);
   const polyScene = PolygonalModels.useStore((state) => state.scene);
-  const saveCam = PolygonalModels.useStore((state) => state.actions.saveBoxCamera);
   const thisBox = useRef<any>();
-  const { scene, gl } = useThree();
+  const { scene, gl, camera } = useThree();
+
+  camera.position.set(5, 5, 5);
+  camera.lookAt(0, 0, 0);
   gl.outputEncoding = THREE.sRGBEncoding;
-  const userpcd = scene.getObjectByName('User.pcd');
-  if (userpcd) {
-    scene.remove(userpcd);
+
+  const usermesh = scene.getObjectByName('Usermesh');
+  if (usermesh) {
+    scene.remove(usermesh);
   }
-  const userobj = scene.getObjectByName('User.obj');
-  if (userobj) {
-    scene.remove(userobj);
-  }
-  const bunny_pcd = scene.getObjectByName('Zaghetto.pcd');
+
+  const bunny_pcd = scene.getObjectByName('bunny.pcd');
   if (bunny_pcd) {
     scene.remove(bunny_pcd);
   }
@@ -57,8 +56,6 @@ const BoxObject: React.FC = () => {
   ]);
 
   const [normalsMesh, setNormalsMesh] = useState(mesh);
-
-  useSavedCamera({ object: box, saveFunc: saveCam });
 
   useEffect(() => {
     setLoading(false);
@@ -105,6 +102,7 @@ const BoxObject: React.FC = () => {
           mesh={normalsMesh}
           length={polyScene.normalsLength}
           color={polyScene.faceNormalsColor}
+          useFalseNormal={false}
         />
 
         <VertexNormals
@@ -112,9 +110,10 @@ const BoxObject: React.FC = () => {
           mesh={normalsMesh}
           length={polyScene.normalsLength}
           color={polyScene.vertexNormalsColor}
+          useFalseNormal={false}
         />
       </a.group>
-      <OrbitControls enablePan={true} />
+      <OrbitControls enablePan={false} />
     </>
   );
 };

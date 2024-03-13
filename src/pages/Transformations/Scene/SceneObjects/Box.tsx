@@ -14,6 +14,7 @@ import { useAnimations } from '../../../../hooks/useAnimations';
 import { useObjectID } from '../../../../hooks/useObjectID';
 // import { VertexNormalsHelper } from 'three-stdlib';
 import { FaceNormalsHelper } from '../../../../components/helpers/FaceNormalsHelper';
+import { transform } from 'typescript';
 
 interface Props {
   objectData: Transformations.SceneObject;
@@ -79,6 +80,7 @@ const Box = React.memo(function Box({ objectData, modelColor }: Props) {
           mesh={mesh}
           length={0.3}
           color={FACE_NORMALS_COLOR}
+          useFalseNormal={state.activeObject.useFalseNormalMatrix}
         />
       )}
     </>

@@ -8,4 +8,5 @@ export interface Complex {
   radius: number;
   isDiffuse: boolean;
   isAO: boolean;
+  isOBJ: boolean;
 }

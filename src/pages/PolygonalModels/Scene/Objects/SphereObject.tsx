@@ -19,16 +19,16 @@ const SphereObject: React.FC = () => {
     scale: loading ? [0.7, 0.7, 0.7] : sphere.scale,
   });
 
-  const { scene } = useThree();
-  const userpcd = scene.getObjectByName('User.pcd');
-  if (userpcd) {
-    scene.remove(userpcd);
+  const { scene, camera } = useThree();
+
+  camera.position.set(5, 5, 5);
+  camera.lookAt(0, 0, 0);
+  const usermesh = scene.getObjectByName('Usermesh');
+  if (usermesh) {
+    scene.remove(usermesh);
   }
-  const userobj = scene.getObjectByName('User.obj');
-  if (userobj) {
-    scene.remove(userobj);
-  }
-  const bunny_pcd = scene.getObjectByName('Zaghetto.pcd');
+
+  const bunny_pcd = scene.getObjectByName('bunny.pcd');
   if (bunny_pcd) {
     scene.remove(bunny_pcd);
   }
@@ -86,6 +86,7 @@ const SphereObject: React.FC = () => {
           mesh={normalsMesh}
           length={polyScene.normalsLength}
           color={polyScene.faceNormalsColor}
+          useFalseNormal={false}
         />
 
         <VertexNormals
@@ -93,6 +94,7 @@ const SphereObject: React.FC = () => {
           mesh={normalsMesh}
           length={polyScene.normalsLength}
           color={polyScene.vertexNormalsColor}
+          useFalseNormal={false}
         />
       </a.group>
       <OrbitControls enablePan={true} />

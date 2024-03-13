@@ -286,6 +286,10 @@ export const useStore = create<State>((set, get) => {
         update((draft: State) => {
           draft.scene.hasAxisHelper = !draft.scene.hasAxisHelper;
         }),
+      toggleMovingLight: (): void =>
+        update((draft: State) => {
+          draft.scene.moveLight = !draft.scene.moveLight;
+        }),
       reset: (obj: ESceneObject): void =>
         update((draft: State) => {
           switch (obj) {
@@ -320,6 +324,14 @@ export const useStore = create<State>((set, get) => {
       setBackgroundColor: (color: string): void =>
         update((draft: State) => {
           draft.scene.backgroundColor = color;
+        }),
+      setBackground: (bg: number): void =>
+        update((draft: State) => {
+          draft.scene.background = bg;
+        }),
+      setBackgroundIntensity: (bgI: number): void =>
+        update((draft: State) => {
+          draft.scene.backgroundIntensity = bgI;
         }),
     },
   };

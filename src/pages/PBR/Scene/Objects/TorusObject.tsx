@@ -3,11 +3,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from '../../../../components/3d/OrbitControls';
 import { PBR } from '../../../../stores';
-import { useFrame, useLoader, useThree } from '@react-three/fiber';
-import { RGBELoader } from 'three-stdlib';
+import { useLoader } from '@react-three/fiber';
 
 const TorusObject: React.FC = () => {
   const torus = PBR.useStore((state: PBR.State) => state.torus);
+  const scene1 = PBR.useStore((state: PBR.State) => state.scene);
 
   const [loading, setLoading] = useState(true);
 
@@ -50,8 +50,10 @@ const TorusObject: React.FC = () => {
             {...transparentTpye}
             attach="material"
             roughnessMap={roughnessMap}
+            normalMap={normalMap}
             transparent={torus.isTransparent}
             transmission={torus.transmission}
+            envMapIntensity={scene1.backgroundIntensity}
           />
         </mesh>
       </a.group>

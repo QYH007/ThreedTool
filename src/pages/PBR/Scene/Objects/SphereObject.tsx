@@ -10,6 +10,7 @@ import { RGBELoader } from 'three-stdlib';
 
 const SphereObject: React.FC = () => {
   const sphere = PBR.useStore((state: PBR.State) => state.sphere);
+  const scene1 = PBR.useStore((state: PBR.State) => state.scene);
   const [loading, setLoading] = useState(true);
 
   const sProps = useSpring({
@@ -53,12 +54,40 @@ const SphereObject: React.FC = () => {
   const { scene, gl } = useThree();
   gl.outputEncoding = THREE.sRGBEncoding;
   gl.physicallyCorrectLights = true;
-  gl.toneMappingExposure = 0.8;
-  new RGBELoader().load('/PBR/env/poly_haven_studio_1k.hdr', function (texture) {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
-    scene.background = texture;
-    scene.environment = texture;
-  });
+
+  switch (scene1.background) {
+    case 1:
+      new RGBELoader().load('/PBR/env/poly_haven_studio_2k.hdr', function (texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.background = texture;
+        scene.environment = texture;
+        scene.backgroundIntensity = scene1.backgroundIntensity;
+      });
+      break;
+    case 2:
+      new RGBELoader().load('/PBR/env/cobblestone_street_night_2k.hdr', function (texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.background = texture;
+        scene.environment = texture;
+        scene.backgroundIntensity = scene1.backgroundIntensity;
+      });
+      break;
+    case 3:
+      new RGBELoader().load('/PBR/env/chinese_garden_2k.hdr', function (texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.background = texture;
+        scene.environment = texture;
+        scene.backgroundIntensity = scene1.backgroundIntensity;
+      });
+      break;
+    default:
+      new RGBELoader().load('/PBR/env/poly_haven_studio_2k.hdr', function (texture) {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        scene.background = texture;
+        scene.environment = texture;
+        scene.backgroundIntensity = scene1.backgroundIntensity;
+      });
+  }
 
   useEffect(() => {
     setLoading(false);
@@ -86,7 +115,7 @@ const SphereObject: React.FC = () => {
             aoMap={sphere.havemap ? aoMap : null}
             metalness={sphere.metalness}
             roughness={sphere.roughness}
-            envMapIntensity={sphere.envMapIntensity}
+            envMapIntensity={scene1.backgroundIntensity}
             color={sphere.havemap ? '#eeeeee' : '#cccccc'}
           />
           {geometry}

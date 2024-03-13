@@ -11,6 +11,7 @@ export interface State {
     saveComplexCamera: (SavedCamera: SavedCamera) => void;
     toggleComplexAO: () => void;
     toggleComplexDiffuse: () => void;
+    loadedOBJ: () => void;
 
     // SCENE
     setActiveSceneObject: (obj: ESceneObject) => void;

@@ -11,7 +11,10 @@ export const initialScene: Scene = {
   normalsLength: 0.3,
   faceNormalsColor: 0xff0000,
   vertexNormalsColor: 0x12ec5b,
-  backgroundColor: '#ffffff',
+  backgroundColor: '#333333',
+  moveLight: false,
+  background: 1,
+  backgroundIntensity: 0.7,
 };
 
 export const initialBox: Box = {
@@ -63,10 +66,10 @@ export const initialSphere: Sphere = {
   maxRadius: 2,
   minRadius: 1,
   widthSegments: 1024,
-  maxWidthSegments: 1024,
+  maxWidthSegments: 64,
   minWidthSegments: 3,
   heightSegments: 1024,
-  maxHeightSegments: 1024,
+  maxHeightSegments: 64,
   minHeightSegments: 3,
   isVisible: true,
   isFlat: false,
@@ -101,11 +104,11 @@ export const initialTorus: Torus = {
   maxTubeWidth: 1,
   minTubeWidth: 0.1,
 
-  radialSegments: 30,
+  radialSegments: 1024,
   maxRadialSegments: 40,
   minRadialSegments: 2,
 
-  tubularSegments: 90,
+  tubularSegments: 1024,
   maxTubularSegments: 200,
   minTubularSegments: 3,
 

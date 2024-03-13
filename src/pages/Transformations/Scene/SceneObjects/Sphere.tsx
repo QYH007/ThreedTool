@@ -74,6 +74,7 @@ const Sphere = React.memo(function Sphere({ modelColor, objectData }: Props) {
           mesh={mesh}
           length={0.3}
           color={FACE_NORMALS_COLOR}
+          useFalseNormal={state.activeObject.useFalseNormalMatrix}
         />
       )}
     </>

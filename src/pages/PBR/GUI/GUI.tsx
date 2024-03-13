@@ -11,18 +11,8 @@ import ModelPicker from './ModelPicker/ModelPicker';
 import ObjectGUIController from './ObjectGUI/ObjectGUIController';
 
 const GUI: React.FC = () => {
-  // const backgroundColor = PBR.useStore((state) => state.scene.backgroundColor);
-  // const setBackgroundColor = PBR.useStore((state) => state.actions.setBackgroundColor);
-
   return (
     <>
-      {/* <PanelTopLeft>
-        <ColorSelector
-          activeColor={backgroundColor}
-          onColorChange={(color): void => setBackgroundColor(color)}
-          bgColor={true}
-        />
-      </PanelTopLeft> */}
       <PanelTopRight>
         <ObjectGUIController />
       </PanelTopRight>

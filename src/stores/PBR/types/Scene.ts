@@ -17,6 +17,9 @@ export interface Scene {
   faceNormalsColor: number;
   vertexNormalsColor: number;
   backgroundColor: string;
+  moveLight: boolean;
+  background: number;
+  backgroundIntensity: number;
 }
 
 export interface SavedCamera {

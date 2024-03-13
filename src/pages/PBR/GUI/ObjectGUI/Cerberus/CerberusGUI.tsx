@@ -4,8 +4,10 @@ import React from 'react';
 import { PanelAppear } from '../../../../../components/layouts/surfaces/PanelAppear';
 import PanelSlider from '../../../../../components/forms/PanelSlider';
 import { PBR } from '../../../../../stores';
+import ScenePicker from '../../ScenePicker';
 
 const CerberusGUI: React.FC = () => {
+  const scene = PBR.useStore((state: PBR.State) => state.scene);
   const cerberus = PBR.useStore((state: PBR.State) => state.cerberus);
   const activeObject = PBR.useStore((state: PBR.State) => state.scene.activeObject);
   const actions = PBR.useStore((state: PBR.State) => state.actions);
@@ -26,6 +28,20 @@ const CerberusGUI: React.FC = () => {
           }
           label="Toggle Visibility"
         />
+        <FormControlLabel
+          control={
+            <Switch
+              color="primary"
+              checked={scene.moveLight}
+              onChange={(): void => actions.toggleMovingLight()}
+              value="checkedA"
+            />
+          }
+          label="Moving Point Light"
+        />
+        <ScenePicker />
+        <Divider />
+
         <FormControlLabel
           control={
             <Switch

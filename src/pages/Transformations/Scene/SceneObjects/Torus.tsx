@@ -76,6 +76,7 @@ const Torus = React.memo(function Box({ objectData, modelColor }: Props) {
           mesh={mesh}
           length={0.3}
           color={FACE_NORMALS_COLOR}
+          useFalseNormal={state.activeObject.useFalseNormalMatrix}
         />
       )}
     </>

@@ -9,7 +9,7 @@ import { useModelContext, useModel } from '../../../ModelContext';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { useDropzone } from 'react-dropzone';
-import { Cache, LoaderUtils, LoadingManager, TextureLoader } from 'three';
+import { Cache, Box3, LoaderUtils, LoadingManager, TextureLoader } from 'three';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
@@ -32,27 +32,29 @@ const UserMeshGUI: React.FC = () => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileType, setFileType] = useState<string | null>(null);
 
-  const [diffMap, setDiffMap] = useState<THREE.Texture | null>(null);
-  const [normalMap, setNormalMap] = useState<THREE.Texture | null>(null);
-  const [roughnessMap, setRoughnessMap] = useState<THREE.Texture | null>(null);
-  const [metalnessMap, setMetalnessMap] = useState<THREE.Texture | null>(null);
-  const [originDiffMap, setOriginDiffMap] = useState<THREE.Texture | null>(null);
-  const [useDiff, setUseDiff] = useState<boolean>(false);
-  const [useNormal, setUseNormal] = useState<boolean>(false);
-  const [useMetal, setUseMetal] = useState<boolean>(false);
-  const [useRough, setUseRough] = useState<boolean>(false);
+  // const [diffMap, setDiffMap] = useState<THREE.Texture | null>(null);
+  // const [normalMap, setNormalMap] = useState<THREE.Texture | null>(null);
+  // const [roughnessMap, setRoughnessMap] = useState<THREE.Texture | null>(null);
+  // const [metalnessMap, setMetalnessMap] = useState<THREE.Texture | null>(null);
+  // const [originDiffMap, setOriginDiffMap] = useState<THREE.Texture | null>(null);
+  // const [useDiff, setUseDiff] = useState<boolean>(false);
+  // const [useNormal, setUseNormal] = useState<boolean>(false);
+  // const [useMetal, setUseMetal] = useState<boolean>(false);
+  // const [useRough, setUseRough] = useState<boolean>(false);
 
-  const [pcdSize, setPcdSize] = useState<number>(0.001);
+  const [pcdSize, setPcdSize] = useState<number>(1);
+  const [minSize, setMinSize] = useState<number>(1);
+  const [maxSize, setMaxSize] = useState<number>(20);
   const [pcdColor, setPcdColor] = useState<THREE.Color>(new THREE.Color(0x888888));
 
-  useEffect(() => {
-    if (model) {
-      updateObj();
-    }
-  }, [useDiff, useNormal, useMetal, useRough]);
+  // useEffect(() => {
+  //   if (model && modelType=='obj') {
+  //     updateObj();
+  //   }
+  // }, [useDiff, useNormal, useMetal, useRough]);
 
   useEffect(() => {
-    if (model) {
+    if (model && modelType == 'pcd') {
       updatePcd();
     }
   }, [pcdSize, pcdColor]);
@@ -70,105 +72,108 @@ const UserMeshGUI: React.FC = () => {
     }
   }
 
-  const handleDiffFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-    }
-    setDiffMap(originDiffMap);
-    setUseDiff(false);
-    if (file) {
-      const loader = new TextureLoader();
-      const textureUrl = URL.createObjectURL(file);
-      const texture = loader.load(textureUrl);
-      texture.encoding = THREE.sRGBEncoding;
-      texture.name = file.name;
-      setDiffMap(texture);
-      setUseDiff(false);
-    }
-    updateObj();
-  };
+  // const handleDiffFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     setSelectedFile(file);
+  //   }
+  //   setDiffMap(originDiffMap);
+  //   setUseDiff(false);
+  //   if (file) {
+  //     const loader = new TextureLoader();
+  //     const textureUrl = URL.createObjectURL(file);
+  //     const texture = loader.load(textureUrl);
+  //     texture.encoding = THREE.sRGBEncoding;
+  //     texture.name = file.name;
+  //     setDiffMap(texture);
+  //     setUseDiff(false);
+  //   }
+  //   updateObj();
+  // };
 
-  const handleNormalFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-    }
-    setUseNormal(false);
-    if (file) {
-      const loader = new TextureLoader();
-      const textureUrl = URL.createObjectURL(file);
-      const texture = loader.load(textureUrl);
-      texture.name = file.name;
-      setNormalMap(texture);
-      setUseNormal(false);
-    }
-    updateObj();
-  };
+  // const handleNormalFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     setSelectedFile(file);
+  //   }
+  //   setUseNormal(false);
+  //   if (file) {
+  //     const loader = new TextureLoader();
+  //     const textureUrl = URL.createObjectURL(file);
+  //     const texture = loader.load(textureUrl);
+  //     texture.name = file.name;
+  //     setNormalMap(texture);
+  //     setUseNormal(false);
+  //   }
+  //   updateObj();
+  // };
 
-  const handleMetalFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-    }
-    setUseMetal(false);
-    if (file) {
-      const loader = new TextureLoader();
-      const textureUrl = URL.createObjectURL(file);
-      const texture = loader.load(textureUrl);
-      texture.name = file.name;
-      setMetalnessMap(texture);
-      setUseMetal(false);
-    }
-    updateObj();
-  };
+  // const handleMetalFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     setSelectedFile(file);
+  //   }
+  //   setUseMetal(false);
+  //   if (file) {
+  //     const loader = new TextureLoader();
+  //     const textureUrl = URL.createObjectURL(file);
+  //     const texture = loader.load(textureUrl);
+  //     texture.name = file.name;
+  //     setMetalnessMap(texture);
+  //     setUseMetal(false);
+  //   }
+  //   updateObj();
+  // };
 
-  const handleRoughFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-    }
-    setUseRough(false);
-    if (file) {
-      const loader = new TextureLoader();
-      const textureUrl = URL.createObjectURL(file);
-      const texture = loader.load(textureUrl);
-      texture.name = file.name;
-      setRoughnessMap(texture);
-      setUseRough(false);
-    }
-    updateObj();
-  };
+  // const handleRoughFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     setSelectedFile(file);
+  //   }
+  //   setUseRough(false);
+  //   if (file) {
+  //     const loader = new TextureLoader();
+  //     const textureUrl = URL.createObjectURL(file);
+  //     const texture = loader.load(textureUrl);
+  //     texture.name = file.name;
+  //     setRoughnessMap(texture);
+  //     setUseRough(false);
+  //   }
+  //   updateObj();
+  // };
 
-  const toggleUseDiffMap = () => {
-    setUseDiff(!useDiff);
-  };
-  const toggleUseNormalMap = () => {
-    setUseNormal(!useNormal);
-  };
+  // const toggleUseDiffMap = () => {
+  //   setUseDiff(!useDiff);
+  // };
+  // const toggleUseNormalMap = () => {
+  //   setUseNormal(!useNormal);
+  // };
 
-  const updateObj = () => {
-    const mat = new THREE.MeshStandardMaterial({
-      map: useDiff ? diffMap : originDiffMap,
-      normalMap: useNormal ? normalMap : null,
-      roughnessMap: useRough ? roughnessMap : null,
-      metalnessMap: useMetal ? metalnessMap : null,
-      metalness: useMetal ? 0.9 : 0,
-      roughness: useRough ? 0.9 : 0,
-    });
-    model.traverse(function (child: any) {
-      // aka setTexture
-      if (child instanceof THREE.Mesh) {
-        // //@ts-ignore
-        child.material = mat;
-      }
-    });
-    setModel(model);
-  };
+  // const updateObj = () => {
+  //   if(useDiff || useNormal || useRough || useMetal){
+  //     const mat = new THREE.MeshStandardMaterial({
+  //       color: '#eeeeee',
+  //       map: useDiff ? diffMap : originDiffMap,
+  //       normalMap: useNormal ? normalMap : null,
+  //       roughnessMap: useRough ? roughnessMap : null,
+  //       metalnessMap: useMetal ? metalnessMap : null,
+  //       metalness: useMetal ? 0.9 : 0,
+  //       roughness: useRough ? 0.9 : 0,
+  //     });
+  //     model.traverse(function (child: any) {
+  //       // aka setTexture
+  //       if (child instanceof THREE.Mesh) {
+  //         // //@ts-ignore
+  //         child.material = mat;
+  //       }
+  //     });
+  //   }
+  //   setModel(model);
+  // };
 
   const updatePcd = () => {
-    if (model) {
-      model.material.size = pcdSize;
+    if (model && modelType && modelType == 'pcd') {
+      model.material.size = minSize + pcdSize * (maxSize - minSize);
     }
     setModel(model);
   };
@@ -177,77 +182,24 @@ const UserMeshGUI: React.FC = () => {
     const baseURL = LoaderUtils.extractUrlBase(fileURL);
 
     return new Promise((resolve, reject) => {
-      MANAGER.setURLModifier((url: string) => {
-        // URIs in a glTF file may be escaped, or not. Assume that assetMap is
-        // from an un-escaped source, and decode all URIs before lookups.
-        // See: https://github.com/donmccurdy/three-gltf-viewer/issues/146
-        const normalizedURL =
-          rootPath +
-          decodeURI(url)
-            .replace(baseURL, '')
-            .replace(/^(\.?\/)/, '');
-
-        acceptedFiles.forEach((file: any) => {
-          if (file.path === normalizedURL) {
-            const blob = file;
-            const blobURL = URL.createObjectURL(blob);
-            blobURLs.push(blobURL);
-            return blobURL;
-          }
-        });
-        return url;
-      });
-
-      const blobURLs: string[] = [];
-
-      if (modelType === 'gltf') {
-        const loader = new GLTFLoader(MANAGER).setCrossOrigin('anonymous').setDRACOLoader(dracoLoader);
-
-        loader.load(
-          fileURL,
-          (gltf) => {
-            const scene = gltf.scene || gltf.scenes[0];
-            const clips = gltf.animations || [];
-
-            if (!scene) {
-              // Valid, but not supported by this viewer.
-              throw new Error(
-                'This model contains no scene, and cannot be viewed here. However,' +
-                  ' it may contain individual 3D resources.',
-              );
-            }
-            blobURLs.forEach(URL.revokeObjectURL);
-
-            // See: https://github.com/google/draco/issues/349
-            // DRACOLoader.releaseDecoderModule();
-            resolve(gltf);
-          },
-          undefined,
-          reject,
-        );
-      } else if (modelType === 'fbx') {
-        console.log('jinru fbx');
-        const loader = new FBXLoader(MANAGER);
-        loader.load(fileURL, (fbx) => {
-          console.log(fbx);
-        });
-      } else if (modelType === 'glb') {
+      if (modelType === 'glb') {
         const loader = new GLTFLoader();
         loader.load(fileURL, (glb) => {
-          setModel(glb);
+          const box = new Box3().setFromObject(glb.scene);
+          const center = box.getCenter(new THREE.Vector3());
+
+          const moveVector = new THREE.Vector3(0, 0, 0).clone().sub(center);
+          // glb.scene.scale.setScalar(scaling);
+          glb.scene.position.add(moveVector);
+          glb.scene.name = 'Usermesh';
+          setModel(glb.scene);
+          setModelType('glb');
         });
       } else if (modelType === 'obj') {
         let objDiffMap: any;
         const loader = new OBJLoader();
         loader.load(fileURL, (obj) => {
           const textureLoader = new TextureLoader();
-          obj.traverse(function (child: any) {
-            // aka setTexture
-            if (child instanceof THREE.Mesh) {
-              //@ts-ignore
-              child.material.map = originDiffMap;
-            }
-          });
 
           // find image as diffusion map
           acceptedFiles.forEach((file: any) => {
@@ -257,7 +209,7 @@ const UserMeshGUI: React.FC = () => {
               objDiffMap = textureLoader.load(PNGUrl);
               objDiffMap.encoding = THREE.sRGBEncoding;
               objDiffMap.name = file.name;
-              setOriginDiffMap(objDiffMap);
+              // setOriginDiffMap(objDiffMap);
               obj.traverse(function (child: any) {
                 // aka setTexture
                 if (child instanceof THREE.Mesh) {
@@ -267,17 +219,38 @@ const UserMeshGUI: React.FC = () => {
               });
             }
           });
-          obj.name = 'User.obj';
+
+          // view initializing
+          const box = new Box3().setFromObject(obj);
+
+          const center = box.getCenter(new THREE.Vector3());
+          const moveVector = new THREE.Vector3(0, 0, 0).clone().sub(center);
+
+          obj.position.add(moveVector);
+          obj.name = 'Usermesh';
+          setModelType('obj');
           setModel(obj);
         });
       } else if (modelType === 'pcd') {
         const pcdLoader = new PCDLoader();
         pcdLoader.load(fileURL, function (points) {
-          points.geometry.center();
           points.geometry.rotateX(Math.PI);
-          points.name = 'User.pcd';
-          // const material = new THREE.PointsMaterial({ color: 0x888888, size: 0.001 });
-          // points.material = material;
+
+          const box = new Box3().setFromObject(points);
+          const size = box.getSize(new THREE.Vector3()).length();
+          const center = box.getCenter(new THREE.Vector3());
+          const moveVector = new THREE.Vector3(0, 0, 0).clone().sub(center);
+
+          setMinSize(size / 10000);
+          setMaxSize(size / 2000);
+
+          points.position.add(moveVector);
+          // points.geometry.center();
+
+          //@ts-ignore
+          points.material.size = size / 10000;
+          points.name = 'Usermesh';
+          setModelType('pcd');
           setModel(points);
         });
       }
@@ -285,14 +258,15 @@ const UserMeshGUI: React.FC = () => {
   };
 
   const onDrop = useCallback((acceptedFiles: any[]) => {
+    console.log('调用on Drop啦');
     let rootFile: any;
     let rootPath: any;
     setFileType(null);
     setModel(null);
 
-    const textureLoader = new TextureLoader();
-    const defaltDiffMap = textureLoader.load('/polygonalModels/WhiteBoard.png');
-    setOriginDiffMap(defaltDiffMap);
+    // const textureLoader = new TextureLoader();
+    // const defaltDiffMap = textureLoader.load('/polygonalModels/WhiteBoard.png');
+    // setOriginDiffMap(defaltDiffMap);
 
     acceptedFiles.forEach((file: any) => {
       if (file.name.match(/\.(gltf|glb|fbx|FBX|obj|OBJ|pcd|PCD)$/)) {
@@ -306,8 +280,6 @@ const UserMeshGUI: React.FC = () => {
     const fileURL = typeof rootFile === 'string' ? rootFile : URL.createObjectURL(rootFile);
 
     load(fileURL, rootPath, acceptedFiles, type);
-
-    // Do something with the files
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -318,7 +290,7 @@ const UserMeshGUI: React.FC = () => {
 
       <FormGroup>
         <Typography variant="subtitle1">Current Model: {fileName ?? 'None'}</Typography>
-        <Divider></Divider>
+        <Divider />
         <br></br>
         <div
           {...getRootProps()}
@@ -331,7 +303,7 @@ const UserMeshGUI: React.FC = () => {
         </div>
         <br></br>
         <Divider />
-        {modelType === 'obj' ? (
+        {/* {modelType === 'obj' ? (
           <>
             <Typography variant="subtitle1">Adding Assert:</Typography>
             <FormControlLabel
@@ -381,48 +353,21 @@ const UserMeshGUI: React.FC = () => {
             />
             <input type="file" onChange={handleRoughFileChange} />
           </>
-        ) : null}
+        ) : null} */}
 
         {modelType === 'pcd' ? (
           <div>
             <PanelSlider
-              label={'Point Size'}
-              value={pcdSize * 1000}
+              label={'Point Size (%)'}
+              value={pcdSize}
               step={1}
               min={1}
-              max={100}
-              onChange={(_, v): void => setPcdSize(+v / 1000)}
+              max={50}
+              onChange={(_, v): void => setPcdSize(+v)}
             />
-            <Typography style={{ fontSize: 13, fontWeight: 'bolder' }}>Point Color</Typography>
-            <GithubPicker
-              width="250px"
-              colors={[
-                '#B80000',
-                '#DB3E00',
-                '#ff9800',
-                '#FCCB00',
-                '#008B02',
-                '#006B76',
-                '#1273DE',
-                '#004DCF',
-                '#5300EB',
-                '#222222',
-                '#ef6966',
-                '#ff8965',
-                '#ffc97b',
-                '#f6e078',
-                '#73f083',
-                '#73e6ef',
-                '#5caefa',
-                '#5f9cf9',
-                '#a580fe',
-                '#eeeeee',
-              ]}
-              color={pcdColor}
-              onChange={(color) => {
-                setPcdColor(new THREE.Color(`rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`));
-              }}
-            />
+            <Typography variant="subtitle1">
+              Actual point size: {(minSize + pcdSize * (maxSize - minSize)).toFixed(4)}
+            </Typography>
           </div>
         ) : null}
       </FormGroup>

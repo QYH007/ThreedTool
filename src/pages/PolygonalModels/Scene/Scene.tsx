@@ -1,5 +1,5 @@
 import React from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
 
 import HeadLight from '../../../components/3d/HeadLight';
 import { PolygonalModels } from '../../../stores';
@@ -11,14 +11,9 @@ import SphereObject from './Objects/SphereObject';
 import TorusObject from './Objects/TorusObject';
 import World from './Objects/World';
 import UserMesh from './Objects/UserMesh';
-import * as THREE from 'three';
-import { useModelContext } from '../ModelContext';
 
 const Scene: React.FC = () => {
   const scene = PolygonalModels.useStore((state: PolygonalModels.State) => state.scene);
-
-  const { model, setModel, modelType, setModelType } = useModelContext();
-  //console.log('Scene model:', model);
 
   const getActiveObject = (): JSX.Element | null => {
     switch (scene.activeObject) {
@@ -34,7 +29,7 @@ const Scene: React.FC = () => {
         return <World />;
       // UserMesh Scene
       case ESceneObject.UserMesh:
-        return <UserMesh model={model} modelType={modelType} />;
+        return <UserMesh />;
       default:
         return null;
     }

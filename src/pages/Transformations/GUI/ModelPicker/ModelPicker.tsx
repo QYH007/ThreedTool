@@ -71,7 +71,7 @@ const ModelPicker: React.FC = () => {
       >
         {Transformations.ESceneObject.TORUS}
       </ToggleButton>
-      <ToggleButton
+      {/* <ToggleButton
         classes={{
           selected: classes.selected,
         }}
@@ -82,7 +82,7 @@ const ModelPicker: React.FC = () => {
         value={'toggle'}
       >
         GROUP
-      </ToggleButton>
+      </ToggleButton> */}
     </ToggleButtonGroup>
   );
 };

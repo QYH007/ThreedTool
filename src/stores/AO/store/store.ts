@@ -35,6 +35,10 @@ export const useStore = create<State>((set, get) => {
         update((draft: State) => {
           draft.complex.isAO = !draft.complex.isAO;
         }),
+      loadedOBJ: (): void =>
+        update((draft: State) => {
+          draft.complex.isOBJ = true;
+        }),
 
       // Scene
       setActiveSceneObject: (obj: ESceneObject): void =>

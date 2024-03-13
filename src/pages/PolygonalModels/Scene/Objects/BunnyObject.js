@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import React, { Suspense, useState, useRef, useEffect } from 'react';
+import React, { Suspense, useRef } from 'react';
 import { useLoader, useThree } from '@react-three/fiber';
 import { DRACOLoader } from 'three-stdlib/loaders/DRACOLoader';
 import { GLTFLoader } from 'three-stdlib/loaders/GLTFLoader';
@@ -8,8 +8,7 @@ import * as THREE from 'three';
 import LoadingSphere from '../../../../components/3d/LoadingSphere';
 import { OrbitControls } from '../../../../components/3d/OrbitControls';
 import { PolygonalModels } from '../../../../stores';
-import { useSavedCamera } from '../../../../hooks/useSavedCamera';
-import { PCDLoader, VertexNormalsHelper } from 'three-stdlib';
+import { PCDLoader } from 'three-stdlib';
 
 export const Asset = ({
   url,
@@ -30,14 +29,11 @@ export const Asset = ({
   });
 
   const Bunny = ({ isWireframe, isFlat, isNormals }) => {
-    // const [ref, obj] = useState();
     const ref = useRef(THREE.Mesh);
-
     const geo = gltf.scene.getObjectByName('mesh_0').geometry;
     const mat = gltf.scene.getObjectByName('mesh_0').material;
 
     const this_scene = gltf.scene.getObjectByName('mesh_0');
-
     return (
       <scene name="OSG_Scene">
         <object3D name="RootNode_(gltf_orientation_matrix)" rotation={[-1.5707963267948963, 0, 0]}>
@@ -75,35 +71,31 @@ export const Asset = ({
 const BunnyObject = () => {
   const bunny = PolygonalModels.useStore((state) => state.complex.models[PolygonalModels.EComplexModel.BUNNY]);
   const scene1 = PolygonalModels.useStore((state) => state.scene);
-  const saveCam = PolygonalModels.useStore((state) => state.actions.saveComplexCamera);
-  const { scene, gl } = useThree();
-  useSavedCamera({ object: bunny, saveFunc: saveCam });
-  const userpcd = scene.getObjectByName('User.pcd');
-  if (userpcd) {
-    scene.remove(userpcd);
-  }
-  const userobj = scene.getObjectByName('User.obj');
-  if (userobj) {
-    scene.remove(userobj);
+  const { scene, camera } = useThree();
+
+  camera.position.set(5, 5, 5);
+  camera.lookAt(0, 0, 0);
+  const usermesh = scene.getObjectByName('Usermesh');
+  if (usermesh) {
+    scene.remove(usermesh);
   }
 
   const PCDloader = new PCDLoader();
   PCDloader.load('/polygonalModels/PCD/rabbit.pcd', function (points) {
-    while (scene.getObjectByName('Zaghetto.pcd')) {
-      const de = scene.getObjectByName('Zaghetto.pcd');
+    while (scene.getObjectByName('bunny.pcd')) {
+      const de = scene.getObjectByName('bunny.pcd');
       scene.remove(de);
     }
     points.geometry.center();
     points.geometry.translate(-1.06, 3.509, -0.15);
     points.geometry.scale(0.4005, 0.4005, 0.4005);
-    points.name = 'Zaghetto.pcd';
+    points.name = 'bunny.pcd';
     const material = new THREE.PointsMaterial({ color: 0xdd0000, size: 0.01 });
     points.material = material;
     if (bunny.isPointClouds) {
       scene.add(points);
     }
   });
-  // console.log(bunny.isVisible);
 
   return (
     <Suspense fallback={<LoadingSphere />}>
@@ -121,7 +113,7 @@ const BunnyObject = () => {
           visible={bunny.isVisible}
         />
         {/* <bufferGeometry>{PC}</bufferGeometry> */}
-        <OrbitControls enablePan={true} />
+        <OrbitControls enablePan={false} />
       </>
     </Suspense>
   );

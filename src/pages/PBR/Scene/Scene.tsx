@@ -9,6 +9,7 @@ import Lights from './Lights';
 import TorusObject from './Objects/TorusObject';
 import BoxObject from './Objects/BoxObject';
 import CerberusObject from './Objects/CerberusObject';
+import Env from './Env';
 
 const Scene: React.FC = () => {
   const scene = PBR.useStore((state: PBR.State) => state.scene);
@@ -48,8 +49,8 @@ const Scene: React.FC = () => {
     <Canvas style={{ background: scene.backgroundColor }}>
       {scene.hasAxisHelper ? <axesHelper args={[20]} /> : null}
       {getActiveObject()}
-      {/* <HeadLight intensity={0.8} /> */}
       <Lights />
+      <Env />
     </Canvas>
   );
 };

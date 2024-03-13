@@ -11,6 +11,7 @@ export interface HelperInput {
   mesh: any;
   length: number;
   color: number;
+  useFalseNormal: boolean;
 }
 
 /**
@@ -23,9 +24,9 @@ export interface HelperInput {
 //   );
 // });
 // FaceNormals.displayName = 'FaceNormals';
-export const FaceNormals = React.forwardRef(({ visible, mesh, length, color }: HelperInput, ref) => {
+export const FaceNormals = React.forwardRef(({ visible, mesh, length, color, useFalseNormal }: HelperInput, ref) => {
   // Instantiate the FaceNormalsHelper with the 'new' keyword
-  const faceNormalsHelper = new FaceNormalsHelper(mesh, length, color);
+  const faceNormalsHelper = new FaceNormalsHelper(mesh, length, color, useFalseNormal);
 
   return (
     //@ts-ignore

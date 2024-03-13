@@ -80,7 +80,10 @@ export interface State {
     // SCENE
     setActiveSceneObject: (obj: ESceneObject) => void;
     toggleAxisHelper: () => void;
+    toggleMovingLight: () => void;
     reset: (obj: ESceneObject) => void;
     setBackgroundColor: (color: string) => void;
+    setBackground: (bg: number) => void;
+    setBackgroundIntensity: (bgI: number) => void;
   };
 }
