@@ -6,6 +6,10 @@ An update of the WebGL Teaching App build with :heart: @uzh
 
 This app is using [@react-three/fiber](https://github.com/react-spring/@react-three/fiber) reconciler under the hood.
 
+## (几乎开发完成)Demo
+https://3d-beta.ifi.uzh.ch/
+因为学校服务器部署出现了问题，在其他功能页面的刷新暂时无法正常运作，正常刷新操作需要重新回到主页再刷新，并再次进入功能页面。
+
 ## Development
 
 **install packages**
